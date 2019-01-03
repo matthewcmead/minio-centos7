@@ -1,0 +1,1 @@
+# minio-centos7
