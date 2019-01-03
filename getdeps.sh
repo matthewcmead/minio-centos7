@@ -28,3 +28,4 @@ fi
 
 wget -O healthcheck.sh https://raw.githubusercontent.com/minio/minio/master/dockerscripts/healthcheck.sh
 wget -O docker-entrypoint.sh https://raw.githubusercontent.com/minio/minio/master/dockerscripts/docker-entrypoint.sh
+sed -i.bak "s/^exec /exec gosu minio /" docker-entrypoint.sh
