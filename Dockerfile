@@ -21,13 +21,21 @@ RUN \
 
 COPY software_dist/gosu /usr/local/bin
 COPY software_dist/minio /usr/local/bin
+COPY software_dist/mc /usr/local/bin
 COPY software_dist/docker-entrypoint.sh /usr/local/bin
 COPY software_dist/healthcheck.sh /usr/local/bin
+COPY software_dist/tini /tini
+COPY startup.sh /usr/local/bin
+COPY make-data-bucket.sh /usr/local/bin
 
 RUN chmod 755 /usr/local/bin/docker-entrypoint.sh \
               /usr/local/bin/healthcheck.sh \
               /usr/local/bin/gosu \
-              /usr/local/bin/minio
+              /usr/local/bin/minio \
+              /usr/local/bin/mc \
+              /tini \
+              /usr/local/bin/startup.sh \
+              /usr/local/bin/make-data-bucket.sh
 
 RUN gosu nobody true
 
@@ -38,7 +46,7 @@ WORKDIR /data
 ENV PATH=/usr/local/bin:${PATH}
 
 
-ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+ENTRYPOINT ["/tini", "--", "/usr/local/bin/startup.sh"]
 
 EXPOSE 9000
 CMD ["minio"]
